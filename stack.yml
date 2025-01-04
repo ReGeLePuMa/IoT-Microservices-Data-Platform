@@ -1,0 +1,51 @@
+services:
+  adapter:
+    image: adapter
+    build:
+      context: ./adapter
+      dockerfile: Dockerfile
+    networks:
+      - adapter_network
+      - db_network
+    environment:
+      - DEBUG_DATA_FLOW=True
+      - INFLUXDB_HOST=influxdb
+      - INFLUXDB_PORT=8086
+      - BROKER_HOST=mosquitto
+      - BROKER_PORT=1883
+    depends_on:
+      - influxdb
+      - mosquitto
+    restart: always
+  
+  influxdb:
+    image: influxdb
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    networks:
+      - db_network
+      - grafana_network
+    volumes:
+      - influxdb_data:/var/lib/influxdb
+      - ./influxdb.conf:/docker-entrypoint-initdb.d/influxdb.conf
+    restart: always
+  
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - 1883:1883
+    networks:
+      - adapter_network
+    restart: always
+    volumes:
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+networks:
+  adapter_network:
+  db_network:
+  grafana_network:
+
+volumes:
+  influxdb_data:
