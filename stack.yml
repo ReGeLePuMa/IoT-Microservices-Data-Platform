@@ -1,6 +1,7 @@
 services:
   adapter:
     image: adapter
+    container_name: adapter
     build:
       context: ./adapter
       dockerfile: Dockerfile
@@ -22,8 +23,6 @@ services:
   influxdb:
     image: influxdb:2.7
     container_name: influxdb
-    ports:
-      - 8086:8086
     networks:
       - db_network
       - grafana_network
@@ -51,12 +50,13 @@ services:
   
   grafana:
     image: grafana/grafana
+    container_name: grafana
     depends_on:
       - influxdb
     networks:
       - grafana_network
     ports:
-      - 80:3000
+      - 3000:3000
     environment:
       - GF_SECURITY_ADMIN_USER=asistent
       - GF_SECURITY_ADMIN_PASSWORD=grafanaSCD2024
