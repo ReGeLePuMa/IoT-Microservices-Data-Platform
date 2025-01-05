@@ -6,7 +6,7 @@ datasources:
     url: http://influxdb:8086
     isDefault: true
     jsonData:
-      version: "2"
+      version: "Flux"
       organization: "mafia"
       token: "sp@rt@n"
       defaultBucket: "tema3"
