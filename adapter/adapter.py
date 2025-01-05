@@ -18,7 +18,7 @@ influx_client = InfluxDBClient(
 
 write_api = influx_client.write_api(write_options=SYNCHRONOUS)
 
-class MQTTChatClient:
+class MQTTAdapterClient:
     def __init__(self, broker_address, broker_port, topic_subscribe):
         self.broker_address = broker_address
         self.broker_port = broker_port
@@ -77,6 +77,6 @@ if __name__ == "__main__":
     broker_address = os.getenv("BROKER_HOST", "localhost")
     broker_port = int(os.getenv("BROKER_PORT", "1883"))
 
-    chat_client = MQTTChatClient(broker_address, broker_port, "#")
+    chat_client = MQTTAdapterClient(broker_address, broker_port, "#")
     chat_client.connect()
     chat_client.start()

@@ -48,6 +48,22 @@ services:
     restart: always
     volumes:
       - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+  
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - influxdb
+    networks:
+      - grafana_network
+    ports:
+      - 80:3000
+    environment:
+      - GF_SECURITY_ADMIN_USER=asistent
+      - GF_SECURITY_ADMIN_PASSWORD=grafanaSCD2024
+    restart: always
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana:/etc/grafana/provisioning
 
 networks:
   adapter_network:
@@ -56,3 +72,4 @@ networks:
 
 volumes:
   influxdb_data:
+  grafana_data:
