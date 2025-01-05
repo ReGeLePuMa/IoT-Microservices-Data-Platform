@@ -9,8 +9,9 @@ services:
       - db_network
     environment:
       - DEBUG_DATA_FLOW=True
-      - INFLUXDB_HOST=influxdb
-      - INFLUXDB_PORT=8086
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=sp@rt@n
+      - INFLUXDB_ORG=mafia
       - BROKER_HOST=mosquitto
       - BROKER_PORT=1883
     depends_on:
@@ -19,16 +20,22 @@ services:
     restart: always
   
   influxdb:
-    image: influxdb
+    image: influxdb:2.7
     container_name: influxdb
     ports:
       - 8086:8086
     networks:
       - db_network
       - grafana_network
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=belea
+      - DOCKER_INFLUXDB_INIT_PASSWORD=spartan2k25
+      - DOCKER_INFLUXDB_INIT_ORG=mafia
+      - DOCKER_INFLUXDB_INIT_BUCKET=tema3
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=sp@rt@n
     volumes:
-      - influxdb_data:/var/lib/influxdb
-      - ./influxdb/influxdb.conf:/docker-entrypoint-initdb.d/influxdb.conf
+      - influxdb_data:/var/lib/influxdb2
     restart: always
   
   mosquitto:
