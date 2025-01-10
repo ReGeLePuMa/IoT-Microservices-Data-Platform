@@ -48,10 +48,11 @@ class MQTTAdapterClient:
                 write_api.write("tema3", db_org, 
                 [
                     {
-                        "measurement": f"{location}.{station}.{key}",
+                        "measurement": f"{station}.{key}",
                         "tags": {
                             "location": location,
-                            "station": station
+                            "station": station,
+                            "key": key
                         },
                         "fields": {
                             "value": float(value)
