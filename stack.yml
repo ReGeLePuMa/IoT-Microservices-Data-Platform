@@ -65,6 +65,18 @@ services:
       - grafana_data:/var/lib/grafana
       - ./grafana:/etc/grafana/provisioning
 
+  generator:
+    build:
+      context: ./iot-generator
+      dockerfile: Dockerfile
+    image: iot-generator
+    container_name: generator
+    environment:
+      - MQTT_HOST=mosquitto
+    networks:
+      - adapter_network
+
+
 networks:
   adapter_network:
   db_network:
